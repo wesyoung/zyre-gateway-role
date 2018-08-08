@@ -1,0 +1,46 @@
+# https://thomas-leister.de/en/mailserver-debian-stretch/
+# https://words.bombast.net/rspamd-with-postfix-dovecot-debian-stretch/#03
+
+---
+- name: "Configure"
+  hosts: launched
+  become: True
+
+  # Fill these in first!
+  vars_files:
+    - "aws_defaults.yml"
+
+  vars:
+    pyzyre_version: 'master'
+    pyzyre_debug: True
+
+    app_user: zyre
+    app_group: zyre
+    zyre_group: group1
+
+    zyre_node_name: 'zyre-gateway'
+    zyre_gossip_connect: 'tcp://{{ aws_eip }}:49154'
+    zyre_endpoint: 'tcp://{{ aws_private_ip }}:49155'
+    zyre_advertise_endpoint: 'tcp://{{ aws_eip }}:49155'
+
+    # to generate your keys- install pyzyre locally
+
+    # $ mkdir ~/.curve && chmod 770 ~/.curve
+    # $ zyre-certs
+
+    # use keys from ~/.curve/test.key_secret here
+
+    # or use these AT YOUR OWN RISK!!!
+
+    #zyre_publickey: 'EMb/8Q}VxehTc@p]M{-&?oOy260djmhZ%?L3WN$h'
+    #zyre_secretkey: ')@A-MVI4?}s-/M!)c5pF5)rvG53fbnGXJxYcN:@]'
+    zyre_gossip_publickey: '{{ zyre_publickey }}'
+
+  pre_tasks:
+    - hostname:
+        name: "zyre-gateway"
+
+  roles:
+    - { role: gateway, tags: role-gateway }
+
+  post_tasks:

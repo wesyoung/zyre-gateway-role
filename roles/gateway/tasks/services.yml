@@ -1,0 +1,18 @@
+---
+- name: systemd env file
+  template: src="{{ item }}.j2" dest="/etc/{{ item }}" mode=0660 owner="{{ app_user }}" group="{{ app_user }}" mode=644
+  with_items:
+    - gateway.env
+  notify: restart zyre
+  tags: service
+
+- name: systemd services
+  template: src=zyre-gateway.service.j2 dest=/etc/systemd/system/zyre-gateway.service owner=root group=root mode=0644
+  notify: restart zyre
+  tags: service
+
+- name: enable services at boot
+  service: name={{ item }} enabled=yes daemon_reload=yes state=started
+  with_items:
+    - zyre-gateway.service
+  tags: service

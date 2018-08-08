@@ -1,0 +1,12 @@
+aws_region: 'us-east-1'
+aws_profile: 'default'
+aws_base_ami: 'ami-cd0f5cb6'
+aws_instance_type: 't2.medium'
+
+# Fill these out with your local env!
+aws_keyname: ''
+aws_vpc_name: ''
+aws_subnet_name: ''
+aws_security_group_name: ''
+aws_eip: ''
+aws_private_ip: ''

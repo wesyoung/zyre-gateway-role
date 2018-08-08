@@ -1,0 +1,21 @@
+[Unit]
+Description=zyre-gateway service
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_user }}
+PIDFile=/run/zyre_gateway.pid
+ExecStart=/usr/local/bin/zyre-gateway -d --advertised-endpoint "{{ zyre_advertise_endpoint }}" \
+--endpoint "{{ zyre_endpoint }}" --gossip-connect "{{ zyre_gossip_connect }}" --group "{{ zyre_group }}" \
+--name zyre-gateway
+KillMode=process
+Restart=on-failure
+KillSignal=SIGINT
+TimeoutStopSec=5
+PrivateTmp=true
+
+EnvironmentFile=-/etc/gateway.env
+
+[Install]
+WantedBy=multi-user.target

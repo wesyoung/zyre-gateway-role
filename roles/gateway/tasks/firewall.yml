@@ -1,0 +1,10 @@
+---
+- file: path=/var/log/ufw.log owner=syslog group=adm mode=640 state=touch
+
+- ufw: rule=allow port="{{ item }}" state=enabled
+  with_items:
+    - 22
+    - 5001
+    - 5002
+    - 49155
+  tags: ufw

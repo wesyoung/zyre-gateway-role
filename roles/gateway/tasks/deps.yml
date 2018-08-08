@@ -1,0 +1,59 @@
+---
+- name: Add an Apt signing key, uses whichever key is at the URL
+  apt_key:
+    url: http://download.opensuse.org/repositories/network:/messaging:/zeromq:/git-draft/xUbuntu_16.04/Release.key
+    state: present
+
+- apt_repository:
+    repo: deb http://download.opensuse.org/repositories/network:/messaging:/zeromq:/git-draft/xUbuntu_16.04/ /
+    state: present
+
+- name: Update apt cache if needed.
+  apt: update_cache=yes upgrade=yes
+
+- name: install deps
+  apt: pkg="{{ item }}" state=latest
+  with_items:
+    - htop
+    - build-essential
+    - libtool
+    - pkg-config
+    - autotools-dev
+    - autoconf
+    - automake
+    - cmake
+    - uuid-dev
+    - libpcre3-dev
+    - python-pip
+    - python-virtualenv
+    - virtualenvwrapper
+    - valgrind
+    - libffi-dev
+    - autoconf
+    - libtool
+    - libczmq-dev
+    - libzyre-dev
+
+- name: install requirements
+  pip: name="{{ item }}"
+  with_items:
+    - cython>=0.20
+
+- name: install pyzmq
+  pip: name="{{ item }}" extra_args='--no-binary :all:'
+  with_items:
+    - pyzmq
+  notify: restart zyre
+
+- name: install pyzyre
+  pip: name="{{ item }}"
+  with_items:
+     - "pyzyre=={{ pyzyre_version }}"
+  notify: restart zyre
+  when: pyzyre_debug is undefined or pyzyre_debug == False
+
+- include_tasks: dist.yml
+  when: pyzyre_debug is defined and pyzyre_debug == True
+
+- name: test
+  command: zyre-broker -h
