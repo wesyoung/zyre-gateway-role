@@ -14,7 +14,6 @@
 - name: install deps
   apt: pkg="{{ item }}" state=latest
   with_items:
-    - htop
     - build-essential
     - libtool
     - pkg-config
@@ -24,15 +23,14 @@
     - cmake
     - uuid-dev
     - libpcre3-dev
-    - python-pip
-    - python-virtualenv
-    - virtualenvwrapper
     - valgrind
     - libffi-dev
     - autoconf
     - libtool
     - libczmq-dev
     - libzyre-dev
+    - python-pip
+    - htop
 
 - name: install requirements
   pip: name="{{ item }}"

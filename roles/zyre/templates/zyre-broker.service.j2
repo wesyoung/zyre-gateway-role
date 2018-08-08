@@ -1,0 +1,19 @@
+[Unit]
+Description=zyre-broker service (gossip)
+
+[Service]
+Type=simple
+User={{ app_user }}
+Group={{ app_user }}
+PIDFile=/run/zyre_broker.pid
+ExecStart=/usr/local/bin/zyre-broker -d --advertised-endpoint "{{ zyre_broker_advertise_endpoint }}" --endpoint "{{ zyre_broker_endpoint }}" --gossip-bind "{{ zyre_broker_gossip_bind }}" --group "{{ zyre_group }}" --zauth-curve-allow /home/zyre/.curve/certs
+KillMode=process
+Restart=on-failure
+KillSignal=SIGINT
+TimeoutStopSec=5
+PrivateTmp=true
+
+EnvironmentFile=-/etc/broker.env
+
+[Install]
+WantedBy=multi-user.target

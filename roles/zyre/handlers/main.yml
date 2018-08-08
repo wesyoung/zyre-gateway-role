@@ -2,4 +2,4 @@
 - name: restart zyre
   service: name={{ item }} enabled=yes daemon_reload=yes state=restarted
   with_items:
-    - zyre-gateway.service
+    - zyre-broker.service

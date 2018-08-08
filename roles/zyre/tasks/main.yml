@@ -1,13 +1,13 @@
 ---
 
-- include_tasks: firewall.yml
-  tags: firewall
-
 - include_tasks: deps.yml
   tags: deps
 
 - user: name="{{ app_user }}" shell=/bin/bash
   tags: keys, users
+
+- include_tasks: keys.yml
+  tags: keys
 
 - import_tasks: services.yml
   tags: services

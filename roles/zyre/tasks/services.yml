@@ -1,18 +1,28 @@
 ---
+- ufw: rule=allow port="{{ item }}" state=enabled
+  with_items:
+    - 22
+    - 49152
+    - 49153
+    - 49154
+    - 49155
+    - 49156
+  tags: ufw
+
 - name: systemd env file
   template: src="{{ item }}.j2" dest="/etc/{{ item }}" mode=0660 owner="{{ app_user }}" group="{{ app_user }}" mode=644
   with_items:
-    - gateway.env
+    - broker.env
   notify: restart zyre
   tags: service
 
 - name: systemd services
-  template: src=zyre-gateway.service.j2 dest=/etc/systemd/system/zyre-gateway.service owner=root group=root mode=0644
+  template: src=zyre-broker.service.j2 dest=/etc/systemd/system/zyre-broker.service owner=root group=root mode=0644
   notify: restart zyre
   tags: service
 
 - name: enable services at boot
   service: name={{ item }} enabled=yes daemon_reload=yes state=started
   with_items:
-    - zyre-gateway.service
+    - zyre-broker.service
   tags: service

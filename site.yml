@@ -18,10 +18,10 @@
     app_group: zyre
     zyre_group: group1
 
-    zyre_node_name: 'zyre-gateway'
-    zyre_gossip_connect: 'tcp://{{ aws_eip }}:49154'
-    zyre_endpoint: 'tcp://{{ aws_private_ip }}:49155'
-    zyre_advertise_endpoint: 'tcp://{{ aws_eip }}:49155'
+    zyre_broker_node_name: 'zyre-broker'
+    zyre_broker_gossip_bind: 'tcp://{{ aws_private_ip }}:49154'
+    zyre_broker_endpoint: 'tcp://{{ aws_private_ip }}:49155'
+    zyre_broker_advertise_endpoint: 'tcp://{{ aws_eip }}:49155'
 
     # to generate your keys- install pyzyre locally
 
@@ -32,15 +32,14 @@
 
     # or use these AT YOUR OWN RISK!!!
 
-    #zyre_publickey: 'EMb/8Q}VxehTc@p]M{-&?oOy260djmhZ%?L3WN$h'
-    #zyre_secretkey: ')@A-MVI4?}s-/M!)c5pF5)rvG53fbnGXJxYcN:@]'
-    zyre_gossip_publickey: '{{ zyre_publickey }}'
+    #zyre_broker_publickey: '&%Uv$SlszDb4RWZw30VXtd^zH/JR6omz&-Ok&&5.'
+    #zyre_broker_secretkey: '4)}j$^-{$JhngCSBUP1Po7CpbL8HYEtTlCcvbS4F'
 
   pre_tasks:
     - hostname:
-        name: "zyre-gateway"
+        name: "zyre-broker"
 
   roles:
-    - { role: gateway, tags: role-gateway }
+    - { role: zyre, tags: role-zyre }
 
   post_tasks:
