@@ -11,8 +11,9 @@
     - "aws_defaults.yml"
 
   vars:
-    pyzyre_version: 'master'
-    pyzyre_debug: True
+    pyzyre_version: '0.0.0a25'
+    #pyzyre_version: 'master'
+    #pyzyre_debug: True
 
     app_user: zyre
     app_group: zyre

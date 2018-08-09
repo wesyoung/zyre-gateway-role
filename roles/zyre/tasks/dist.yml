@@ -1,37 +1,22 @@
 ---
-- name: pull release from github
-  get_url:
-    url: "https://github.com/wesyoung/pyzyre/archive/{{ pyzyre_version }}.tar.gz"
-    dest: /tmp/pyzyre.tar.gz
-  when: GH_TOKEN is undefined or GH_TOKEN == ""
 
-# github likes to throttle when
-- name: pull release from github
-  get_url:
-    url: "https://github.com/wesyoung/pyzyre/archive/{{ pyzyre_version }}.tar.gz"
-    dest: /tmp/pyzyre.tar.gz
-    headers: "Authorization: Token {{ GH_TOKEN }}"
-  when: GH_TOKEN is defined and GH_TOKEN != ""
+- name: install pyzmq
+  pip: name="{{ item }}" extra_args='--no-binary :all:'
+  with_items:
+    - pyzmq==17.1.0
 
-- name: unarchive
-  unarchive: src=/tmp/pyzyre.tar.gz dest=/tmp/ remote_src=true
+- name: install pyzyre
+  environment:
+    PYZYRE_BUILD_MASTER_CZMQ: 1
+    PYZYRE_BUILD_MASTER_ZYRE: 1
+  pip: name="{{ item }}"
+  with_items:
+     - "pyzyre=={{ pyzyre_version }}"
+  notify: restart zyre
+  when: pyzyre_debug is undefined or pyzyre_debug == False
 
-- name: "sanitize"
-  set_fact: pyzyre_release_dir="{{ pyzyre_version | regex_replace('\/', '-') }}"
-
-- debug: msg="{{ pyzyre_release_dir }}"
-
-- name: install requirements
-  command: pip install -r dev_requirements.txt chdir=/tmp/pyzyre-{{ pyzyre_release_dir }}
-
-- name: build
-  shell: PYZYRE_BUILD_MASTER=1 PYZYRE_ZYRE_BUILD_MASTER=1 python setup.py build_ext sdist chdir=/tmp/pyzyre-{{ pyzyre_release_dir }}
-
-- name: run tests
-  command: python setup.py test chdir=/tmp/pyzyre-{{ pyzyre_release_dir }}
-
-- name: install
-  shell: python setup.py install chdir=/tmp/pyzyre-{{ pyzyre_release_dir }}
+- include_tasks: sdist.yml
+  when: pyzyre_debug is defined and pyzyre_debug == True
 
 - name: test
   command: zyre-broker -h

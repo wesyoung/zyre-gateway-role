@@ -9,8 +9,8 @@
 - include_tasks: keys.yml
   tags: keys
 
+- include_tasks: dist.yml
+  tags: dist
+
 - import_tasks: services.yml
   tags: services
-
-
-

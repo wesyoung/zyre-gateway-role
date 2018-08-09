@@ -36,22 +36,3 @@
   pip: name="{{ item }}"
   with_items:
     - cython>=0.20
-
-- name: install pyzmq
-  pip: name="{{ item }}" extra_args='--no-binary :all:'
-  with_items:
-    - pyzmq
-  notify: restart zyre
-
-- name: install pyzyre
-  pip: name="{{ item }}"
-  with_items:
-     - "pyzyre=={{ pyzyre_version }}"
-  notify: restart zyre
-  when: pyzyre_debug is undefined or pyzyre_debug == False
-
-- include_tasks: dist.yml
-  when: pyzyre_debug is defined and pyzyre_debug == True
-
-- name: test
-  command: zyre-broker -h
