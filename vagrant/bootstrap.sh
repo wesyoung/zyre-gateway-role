@@ -16,7 +16,7 @@ zyre_broker_advertise_endpoint="tcp://${public_ip}:49155"
 # $ zyre-certs
 # use keys from ~/.curve/test.key_secret here
 # or use these AT YOUR OWN RISK!!!
-zyre_broker_publickey="jG#7UCG2e#paJKOrLUk5#SIn5e16c1k\&CE\*57Wp\!"
+zyre_broker_publickey="\&\%Uv\$SlszDb4RWZw30VXtd\^zH\/JR6omz\&\-Ok\&\&5"
 zyre_broker_secretkey="4)}j\$^-{\$JhngCSBUP1Po7CpbL8HYEtTlCcvbS4F"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -39,16 +39,12 @@ pip install cython
 pip install 'pyzmq>=16.0.4,<17' --no-binary :all:
 pip install pyzyre
 
-wget https://github.com/wesyoung/pyzyre/archive/${pyzyre_version}.tar.gz -O /tmp/pyzyre.tar.gz
+#wget https://github.com/wesyoung/pyzyre/archive/${pyzyre_version}.tar.gz -O /tmp/pyzyre.tar.gz
+#tar -zxvf /tmp/pyzyre.tar.gz -C /tmp/
+#pyzyre_release_dir=`echo "${pyzyre_version}" | sed 's/\//-/g'`
 
-tar -zxvf /tmp/pyzyre.tar.gz -C /tmp/
-
-pyzyre_release_dir=`echo "${pyzyre_version}" | sed 's/\//-/g'`
-
-echo "pyzyre release dir is ${pyzyre_release_dir}"
-
-cd /tmp/pyzyre-${pyzyre_version}
-pip install -r dev_requirements.txt
+#cd /tmp/pyzyre-${pyzyre_version}
+#pip install -r dev_requirements.txt
 
 #cd /tmp/pyzyre-${pyzyre_release_dir}
 #PYZYRE_BUILD_MASTER=1 PYZYRE_ZYRE_BUILD_MASTER=1 python setup.py build_ext sdist
