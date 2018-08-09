@@ -4,4 +4,4 @@
   file: path="/home/{{ app_user}}/.curve/certs" owner="{{ app_user }}" group="{{ app_group }}" mode=0700 state=directory
 
 - name: copy public keys
-  template: src=broker.key_secret.j2 dest=/home/zyre/.curve/certs owner="{{ app_user }}" group="{{ app_group }}" mode=0600
+  template: src=broker.key_secret.j2 dest=/home/{{ app_user}}/.curve/certs owner="{{ app_user }}" group="{{ app_group }}" mode=0600
